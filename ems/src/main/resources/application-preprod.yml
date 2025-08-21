@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    url: jdbc:sqlserver://10.0.2.20:1433;databaseName=alvora_preprod
+    username: preprod_user
+    password: PreProd@123
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+
+server:
+  port: 8084
+
+app:
+  base-url: https://preprod.alvora.com/api
