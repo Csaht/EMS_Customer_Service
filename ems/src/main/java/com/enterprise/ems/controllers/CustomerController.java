@@ -26,9 +26,33 @@ public class CustomerController {
     private CustomerService customerService;
 
     // ✅ POST Mapping
-    @PostMapping("/addCustomer")
+   /* @PostMapping("/addCustomer")
     public Customer addCustomer(@RequestBody Customer customer) {
         return customerService.addCustomer(customer);
+    }
+*/
+    @PostMapping("/addCustomer")
+    public ResponseEntity<ApiResponse<CustomerResponse>> addCustomer(@RequestBody Customer customer) {
+        Customer savedCustomer = customerService.addCustomer(customer);
+
+        CustomerResponse customerResponse = new CustomerResponse(
+                savedCustomer.getCustomerId(),
+                savedCustomer.getFirstName(),
+                savedCustomer.getLastName(),
+                savedCustomer.getEmail(),
+                savedCustomer.getPhone(),
+                savedCustomer.getAddress()
+        );
+
+        ApiResponse<CustomerResponse> response = new ApiResponse<>(
+                true,
+                200,
+                "Customer added successfully",
+                customerResponse,
+                null
+
+        );
+        return ResponseEntity.status(201).body(response);
     }
 
     // ✅ GET Mapping - Get Customer by ID
@@ -107,15 +131,31 @@ public class CustomerController {
     }
 
     // ✅ PUT Mapping (update)
-    /*@PutMapping("/updateCustomer/{id}")
-    public Customer updateCustomer(@PathVariable Long id, @RequestBody Customer customer) {
+    @PutMapping("/updateCustomer/{id}")
+    public Customer updateCustomer(@PathVariable Integer id, @RequestBody Customer customer) {
         return customerService.updateCustomer(id, customer);
-    }*/
+    }
 
     // ✅ DELETE Mapping
-    @DeleteMapping("/deleteCustomer/{id}")
+   /* @DeleteMapping("/deleteCustomer/{id}")
     public String deleteCustomer(@PathVariable Integer  id) {
         customerService.deleteCustomer(id);
         return "Customer deleted successfully with id: " + id;
+    }*/
+
+    @DeleteMapping("/deleteCustomer/{id}")
+    public ResponseEntity<ApiResponse<Void>> deleteCustomer(@PathVariable Integer id) {
+        customerService.deleteCustomer(id);
+
+        ApiResponse<Void> response = new ApiResponse<>(
+                true,
+                200,
+                "Customer deleted successfully with id: " + id,
+                null,
+                null
+        );
+
+        return ResponseEntity.ok(response);
     }
+
 }

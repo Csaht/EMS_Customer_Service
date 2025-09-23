@@ -46,7 +46,7 @@ public class CustomerService {
         return customerRepository.findById(id);
     }
 
-    /*public Customer updateCustomer(Long id, Customer updatedCustomer) {
+    public Customer updateCustomer(Integer id, Customer updatedCustomer) {
         return customerRepository.findById(id)
                 .map(existingCustomer -> {
                     existingCustomer.setFirstName(updatedCustomer.getFirstName());
@@ -57,7 +57,7 @@ public class CustomerService {
                     return customerRepository.save(existingCustomer);
                 })
                 .orElseThrow(() -> new RuntimeException("Customer not found with id: " + id));
-    }*/
+    }
 
     public void deleteCustomer(Integer  id) {
         customerRepository.deleteById(id);
