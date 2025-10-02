@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:sqlserver://localhost:1433;encrypt=true;trustServerCertificate=true;databaseName=order_mgmt_db
+    url: jdbc:sqlserver://localhost:1433;encrypt=true;trustServerCertificate=true;databaseName=customer_mgmt_db
     username: fashionUser
     password: fashion2k25
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
@@ -11,14 +11,5 @@ spring:
     show-sql: true
 
 #server:
-  #port: 8080
 
-app:
   base-url: http://localhost:8080/api
-
-  #fashionUser
-  #fashion2k25
-
-  # databaseName=loginedUser
-  # username: mohdtest
-  # password: Btech@2k21
