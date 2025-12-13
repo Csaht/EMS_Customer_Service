@@ -4,6 +4,7 @@ import com.enterprise.ems.dtos.ApiResponse;
 import com.enterprise.ems.dtos.CustomerResponse;
 import com.enterprise.ems.dtos.PaginationResponse;
 import com.enterprise.ems.entities.Customer;
+import com.enterprise.ems.entities.CustomerContact;
 import com.enterprise.ems.services.CustomerService;
 
 import org.springframework.data.domain.Page;
@@ -26,11 +27,10 @@ public class CustomerController {
     private CustomerService customerService;
 
     // ✅ POST Mapping
-   /* @PostMapping("/addCustomer")
+  /*  @PostMapping("/addCustomer")
     public Customer addCustomer(@RequestBody Customer customer) {
         return customerService.addCustomer(customer);
-    }
-*/
+    }*/
     @PostMapping("/addCustomer")
     public ResponseEntity<ApiResponse<CustomerResponse>> addCustomer(@RequestBody Customer customer) {
         Customer savedCustomer = customerService.addCustomer(customer);
