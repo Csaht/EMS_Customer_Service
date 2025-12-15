@@ -10,6 +10,7 @@ public class CustomerContactResponse {
     private String address;
     private String pincode;
 
+
     // ✅ No-args constructor (needed for Jackson / frameworks)
     public CustomerContactResponse() {}
 
