@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface CustomerContactRepository extends JpaRepository<CustomerContact, Long> {
 
@@ -21,5 +23,9 @@ public interface CustomerContactRepository extends JpaRepository<CustomerContact
             "LOWER(c.address) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR  " +
             "LOWER(c.language) LIKE LOWER(CONCAT('%', :searchTerm, '%'))")
     Page<CustomerContact> searchContact(@Param("searchTerm") String searchTerm, Pageable pageable);
+
+
+
+    void deleteByIdIn(List<Long> ids);
 
 }

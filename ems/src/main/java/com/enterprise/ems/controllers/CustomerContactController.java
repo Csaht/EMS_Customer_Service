@@ -1,7 +1,5 @@
 package com.enterprise.ems.controllers;
-import com.enterprise.ems.dtos.ApiResponse;
-import com.enterprise.ems.dtos.CustomerContactResponse;
-import com.enterprise.ems.dtos.PaginationResponse;
+import com.enterprise.ems.dtos.*;
 import com.enterprise.ems.entities.CustomerContact;
 import com.enterprise.ems.helper.CustomerContactExcelHelper;
 import com.enterprise.ems.services.CustomerContactService;
@@ -10,11 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
+import java.io.ByteArrayInputStream;
 import java.util.List;
 
 @RestController
@@ -192,6 +192,9 @@ public class CustomerContactController {
     public ResponseEntity<ApiResponse<String>> upload(
             @RequestParam("file") MultipartFile file) {
 
+
+         System.out.println("Hi i am call");
+
         // 1️⃣ Validate Excel format
         if (!CustomerContactExcelHelper.checkExcelFormat(file)) {
             return ResponseEntity.badRequest().body(
@@ -218,6 +221,67 @@ public class CustomerContactController {
                         null
                 )
         );
+    }
+
+
+  /*  @DeleteMapping("/bulk-delete")
+    public ResponseEntity<ApiResponse<String>> bulkDelete(
+            @RequestBody @Valid BulkDeleteRequest request) {
+
+        int deletedCount = customerContactService.bulkDelete(request.getIds());
+
+        return ResponseEntity.ok(
+                new ApiResponse<>(
+                        true,
+                        200,
+                        deletedCount + " records deleted successfully",
+                        "SUCCESS",
+                        null
+                )
+        );
+    }*/
+
+    @DeleteMapping("/bulk-delete")
+    public ResponseEntity<ApiResponse<String>> bulkDelete(
+            @RequestBody @Valid BulkDeleteRequest<Long> request) {
+
+        int deletedCount = customerContactService.bulkDelete(request.getItems());
+
+        return ResponseEntity.ok(
+                new ApiResponse<>(
+                        true,
+                        200,
+                        deletedCount + " records deleted successfully",
+                        "SUCCESS",
+                        null
+                )
+        );
+    }
+
+
+    // Bulk download with optional filters
+
+   /* POST /customer-contacts/download
+    Content-Type: application/json
+    Body:
+    {
+        "language": "English",
+            "pincode": "110001"
+    }
+*/
+    @PostMapping("/download")
+    public ResponseEntity<byte[]> downloadExcel(@RequestBody(required = false) CustomerContactFilter filter) throws Exception {
+
+        if (filter == null) filter = new CustomerContactFilter(); // no filter => all data
+
+        ByteArrayInputStream in = customerContactService.exportToExcel(filter);
+
+        return ResponseEntity.ok()
+
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=customers.xlsx")
+                .contentType(MediaType.parseMediaType(
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                .body(in.readAllBytes());
     }
 
 }

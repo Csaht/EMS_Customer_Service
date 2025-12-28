@@ -2,6 +2,7 @@ package com.enterprise.ems.helper;
 
 import com.enterprise.ems.entities.CustomerContact;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -26,7 +27,7 @@ public class CustomerContactExcelHelper {
     }
 
 
-   // Convert Excel to list
+  /* // Convert Excel to list
     public static List<CustomerContact> convertExcelToList(InputStream is){
         List<CustomerContact> list = new ArrayList<>();
 
@@ -90,5 +91,42 @@ public class CustomerContactExcelHelper {
         }
 
         return  list;
+    }*/
+
+    public static List<CustomerContact> convertExcelToList(InputStream is) {
+
+        List<CustomerContact> list = new ArrayList<>();
+
+        try (XSSFWorkbook workbook = new XSSFWorkbook(is)) {
+
+            XSSFSheet sheet = workbook.getSheetAt(0); // safe
+
+            DataFormatter formatter = new DataFormatter();
+
+            int rowNumber = 0;
+            for (Row row : sheet) {
+
+                if (rowNumber == 0) { // header
+                    rowNumber++;
+                    continue;
+                }
+
+                CustomerContact cc = new CustomerContact();
+
+                cc.setName(formatter.formatCellValue(row.getCell(0)));
+                cc.setEmail(formatter.formatCellValue(row.getCell(1)));
+                cc.setPhone(formatter.formatCellValue(row.getCell(2)));
+                cc.setLanguage(formatter.formatCellValue(row.getCell(3)));
+                cc.setAddress(formatter.formatCellValue(row.getCell(4)));
+                cc.setPincode(formatter.formatCellValue(row.getCell(5)));
+                list.add(cc);
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException("Excel parsing failed", e);
+        }
+
+        return list;
     }
+
 }
