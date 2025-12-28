@@ -15,28 +15,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CustomerContact {
-    /*@Id
-
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(unique = true, nullable = false)
-    private String name;
-    private String email;
-
-    @Column(nullable = false)
-    private String phone;
-
-    private String language;
-
-    @Column(nullable = false)
-    private String address;
-
-    @Column(nullable = false)
-    private String pincode;
-*/
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

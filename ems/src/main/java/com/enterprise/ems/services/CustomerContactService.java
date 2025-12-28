@@ -1,10 +1,15 @@
 package com.enterprise.ems.services;
 import com.enterprise.ems.entities.CustomerContact;
+import com.enterprise.ems.helper.CustomerContactExcelHelper;
 import com.enterprise.ems.repositories.CustomerContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.List;
 
 import java.util.Optional;
 
@@ -47,5 +52,16 @@ public class CustomerContactService {
 
     public void deleteContact(Long  id) {
         customerContactRepository.deleteById(id);
+    }
+
+    public void upload(MultipartFile file){
+
+
+       try {
+           List<CustomerContact> data = CustomerContactExcelHelper.convertExcelToList(file.getInputStream());
+           this.customerContactRepository.saveAll(data);
+       } catch (IOException e) {
+          e.printStackTrace();
+       }
     }
 }

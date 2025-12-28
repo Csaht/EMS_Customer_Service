@@ -3,6 +3,7 @@ import com.enterprise.ems.dtos.ApiResponse;
 import com.enterprise.ems.dtos.CustomerContactResponse;
 import com.enterprise.ems.dtos.PaginationResponse;
 import com.enterprise.ems.entities.CustomerContact;
+import com.enterprise.ems.helper.CustomerContactExcelHelper;
 import com.enterprise.ems.services.CustomerContactService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +13,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/customersContact")
+@RequestMapping("/api/customer-contact")
 
 public class CustomerContactController {
 
@@ -150,6 +152,72 @@ public class CustomerContactController {
         );
 
         return ResponseEntity.ok(response);
+    }
+
+
+  /*  ********************/
+   /* @PostMapping("/upload")
+    public ResponseEntity<?> upload(@RequestParam("file") MultipartFile file) {
+
+       // CustomerContact savedCustomer = customerContactService.upload(file);
+        if(CustomerContactExcelHelper.checkExcelFormat(file)){
+           CustomerContact uploaded  =  customerContactService.upload(file);
+
+        }
+     *//*   CustomerContactResponse customerResponse = new CustomerContactResponse(
+
+                savedCustomer.getName(),
+                savedCustomer.getPincode(),
+                savedCustomer.getEmail(),
+                savedCustomer.getPhone(),
+                savedCustomer.getAddress(),
+                savedCustomer.getLanguage()
+        );
+
+        ApiResponse<CustomerContactResponse> response = new ApiResponse<>(
+                true,
+                200,
+                " Created successfully",
+                customerResponse,
+                null
+
+        );*//*
+        return ResponseEntity.status(201).body(response);
+
+    }
+*/
+
+
+    @PostMapping("/upload")
+    public ResponseEntity<ApiResponse<String>> upload(
+            @RequestParam("file") MultipartFile file) {
+
+        // 1️⃣ Validate Excel format
+        if (!CustomerContactExcelHelper.checkExcelFormat(file)) {
+            return ResponseEntity.badRequest().body(
+                    new ApiResponse<>(
+                            false,
+                            400,
+                            "Invalid file format. Please upload an Excel (.xlsx) file",
+                            null,
+                            null
+                    )
+            );
+        }
+
+        // 2️⃣ Upload & save Excel data
+        customerContactService.upload(file);
+
+        // 3️⃣ Success response
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                new ApiResponse<>(
+                        true,
+                        201,
+                        "Customer contacts uploaded successfully from Excel",
+                        "SUCCESS",
+                        null
+                )
+        );
     }
 
 }
