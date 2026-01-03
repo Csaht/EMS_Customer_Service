@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .header {
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+        }
+        .content {
+            margin-top: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #333;
+            padding: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">Invoice</div>
+
+<div class="content">
+    <p>Customer Name: <b th:text="${name}"></b></p>
+    <p>Date: <span th:text="${date}"></span></p>
+
+    <table>
+        <tr>
+            <th>Item</th>
+            <th>Price</th>
+        </tr>
+        <tr th:each="item : ${items}">
+            <td th:text="${item.name}"></td>
+            <td th:text="${item.price}"></td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>

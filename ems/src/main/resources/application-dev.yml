@@ -8,8 +8,34 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+      show-sql: true
+
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 25MB
+
+
+
+  logging:
+    level:
+      root: DEBUG
+      org.springframework: DEBUG
+      com.enterprise.ems: DEBUG   # your package
+
+
+
+  cloudinary:
+    cloud-name: dz8fvgbrs
+    api-key: 189877976637468
+    api-secret: qxWVu4CRG_074jCvJcY_NlIWPoY
+
+   # cloud-name: ${CLOUDINARY_CLOUD_NAME}
+   # api-key: ${CLOUDINARY_API_KEY}
+   # api-secret: ${CLOUDINARY_API_SECRET}
+    #api-secret: ${CLOUDINARY_API_SECRET}
 
 #server:
+
 
   base-url: http://localhost:8080/api

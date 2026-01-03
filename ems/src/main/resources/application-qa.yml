@@ -10,6 +10,15 @@ spring:
       ddl-auto: validate
     show-sql: false
 
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 25MB
+
+  cloudinary:
+    cloud-name: dz8fvgbrs
+    api-key: 189877976637468
+    api-secret: qxWVu4CRG_074jCvJcY_NlIWPoY
 server:
   port: 8082
 
